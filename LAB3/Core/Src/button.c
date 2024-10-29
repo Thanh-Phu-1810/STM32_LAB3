@@ -25,18 +25,30 @@ int KeyReg3_Button3 = NORMAL_STATE;
 int button1_flag = 0;
 int button2_flag = 0;
 int button3_flag = 0;
-int isButtonPressed()
+
+int timer_counter_button1;
+int timer_counter_button2;
+int timer_counter_button3;
+int isButtonPressed1()
 {
 	if(button1_flag == 1)
 	{
 		button1_flag = 0;
 		return 1;
 	}
+    return 0;
+}
+int isButtonPressed2()
+{
 	if(button2_flag == 1)
 	{
 		button2_flag = 0;
 		return 1;
 	}
+	return 0;
+}
+int isButtonPressed3()
+{
 	if(button3_flag == 1)
 	{
 		button3_flag = 0;
@@ -70,17 +82,17 @@ void getKeyInput() //Tối ưu code chổ này sao cho thành một máy trạng
 			if(KeyReg2_Button1 == PRESSED_STATE)
 			{
 				subKeyProcess1();
-				setTimer(2000);
+				timer_counter_button1 = 2000;
 			}
 		}
 		else
 		{
-			timer_counter--;
-			if(timer_counter <= 0)
+			timer_counter_button1--;
+			if(timer_counter_button1 <= 0)
 			{
 				if(KeyReg2_Button1 == PRESSED_STATE)
                 subKeyProcess1();
-				setTimer(50);
+				timer_counter_button1 = 50;
 			}
 		}
 	}
@@ -97,17 +109,17 @@ void getKeyInput() //Tối ưu code chổ này sao cho thành một máy trạng
 			if(KeyReg2_Button2 == PRESSED_STATE)
 			{
 				subKeyProcess2();
-				setTimer(2000);
+				timer_counter_button2 = 2000;
 			}
 		}
 		else
 		{
-			timer_counter--;
-			if(timer_counter <= 0)
+			timer_counter_button2--;
+			if(timer_counter_button2 <= 0)
 			{
 				if(KeyReg2_Button2 == PRESSED_STATE)
 				subKeyProcess2();
-				setTimer(50);
+				timer_counter_button2 = 50;
 			}
 		}
 	}
@@ -124,17 +136,17 @@ void getKeyInput() //Tối ưu code chổ này sao cho thành một máy trạng
 			if(KeyReg2_Button3 == PRESSED_STATE)
 			{
 				subKeyProcess3();
-				setTimer(2000);
+				timer_counter_button3 = 2000;
 			}
 		}
 		else
 		{
-			timer_counter--;
-			if(timer_counter <= 0)
+			timer_counter_button3--;
+			if(timer_counter_button3 <= 0)
 			{
 				if(KeyReg2_Button3 == PRESSED_STATE)
 				subKeyProcess3();
-				setTimer(50);
+				timer_counter_button3 = 50;
 			}
 		}
 	}

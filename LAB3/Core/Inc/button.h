@@ -19,7 +19,9 @@ extern int button2_flag;
 extern int button3_flag;
 
 void getKeyInput();
-int isButtonPressed();
+int isButtonPressed1();
+int isButtonPressed2();
+int isButtonPressed3();
 void subKeyProcess1();
 void subKeyProcess2();
 void subKeyProcess3();

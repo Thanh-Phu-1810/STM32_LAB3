@@ -15,6 +15,9 @@
 #include "led7_segment.h"
 
 extern int status;
+extern int led7_seg[3];
+extern int led_blinky;
+extern int led_blinky1;
 
 #define INIT       1
 #define AUTO_RED_GREEN      2
@@ -22,5 +25,11 @@ extern int status;
 #define AUTO_GREEN_RED 		4
 #define AUTO_YELLOW_RED 	5
 
-
+#define NORMAL_MODE             12
+#define MODE_LED_RED            13
+#define MODE_LED_YELLOW         14
+#define MODE_LED_GREEN          15
+void display7SEG_AUTO();
+void display7SEG_MAN();
+void clearAllLed();
 #endif /* INC_GLOBAL_H_ */

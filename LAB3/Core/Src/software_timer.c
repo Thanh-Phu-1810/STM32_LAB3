@@ -22,6 +22,9 @@ int timer3_counter = 0;
 int timer4_flag = 0;
 int timer4_counter = 0;
 
+int timer5_flag = 0;
+int timer5_counter = 0;
+
 int TIMER_CYCLE = 10;
 void setTimer(int time)
 {
@@ -47,6 +50,11 @@ void setTimer4(int time)
 {
 	timer4_counter = time / TIMER_CYCLE;
 	timer4_flag = 0;
+}
+void setTimer5(int time)
+{
+	timer5_counter = time / TIMER_CYCLE;
+	timer5_flag = 0;
 }
 void timerRun()
 {
@@ -94,4 +102,13 @@ void timerRun()
 				timer4_flag = 1;
 			}
 		}
+
+	if(timer5_counter > 0)
+	{
+		timer5_counter--;
+		if(timer5_counter <= 0)
+		{
+			timer5_counter = 1;
+		}
+	}
 }

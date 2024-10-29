@@ -23,12 +23,16 @@ extern int timer3_counter;
 extern int timer4_flag;
 extern int timer4_counter;
 
+extern int timer5_flag;
+extern int timer5_counter;
+
 extern int TIMER_CYCLE;
 void setTimer(int time);
 void setTimer1(int time);
 void setTimer2(int time);
 void setTimer3(int time);
 void setTimer4(int time);
+void setTimer5(int time);
 void timerRun();
 
 #endif /* INC_SOFTWARE_TIMER_H_ */

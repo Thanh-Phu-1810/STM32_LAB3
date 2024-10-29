@@ -27,6 +27,7 @@
 #include "traffic_light.h"
 #include "fsm_automatic.h"
 #include "global.h"
+#include "fsm_manual.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -99,10 +100,11 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   status = INIT;
-  while (1)
+  while(1)
   {
     /* USER CODE END WHILE */
 	 fsm_automatic_run();
+	 fsm_manual_run();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
