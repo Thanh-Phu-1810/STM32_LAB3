@@ -1,2 +1,2 @@
-fsm_manual.c:14:6:fsm_manual_run	8	static
-fsm_manual.c:151:6:display7SEG_MAN	8	static
+fsm_manual.c:16:6:fsm_manual_run	8	static
+fsm_manual.c:163:6:display7SEG_MAN	8	static

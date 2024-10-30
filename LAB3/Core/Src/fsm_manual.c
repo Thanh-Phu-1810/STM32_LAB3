@@ -11,24 +11,27 @@ int temp_yellow = 2;
 int temp_green = 3;
 int led_blinky1 = 0;
 
+int display_led = 5;
+int tmp = 1;
 void fsm_manual_run()
 {
 	//HAL_GPIO_WritePin(GPIOA, LED_1_Pin | LED_2_Pin | LED_3_Pin | LED_4_Pin | LED_5_Pin | LED_6_Pin, RESET);
 	switch(status)
 	{
-		case NORMAL_MODE:
-			if(timer2_flag == 1)
-			{
-				status = INIT;
-			}
-			if(isButtonPressed1() == 1)
-			{
-				status = MODE_LED_RED;
-				setTimer2(10000);
-				setTimer3(500);
-				setTimer4(250);
-			}
-			break;
+//		case NORMAL_MODE:
+//			if(timer2_flag == 1)
+//			{
+//				status = INIT;
+//			}
+//			if(isButtonPressed1() == 1)
+//			{
+//				status = MODE_LED_RED;
+//				setTimer2(10000);
+//				setTimer3(500);
+//				setTimer4(250);
+//				display_led = temp_red;
+//			}
+//			break;
 		case MODE_LED_RED:
 			if(timer3_flag == 1)
 			{
@@ -39,14 +42,16 @@ void fsm_manual_run()
 			if(isButtonPressed2() == 1)
 			{
 				temp_red++;
+				display_led = temp_red;
+
 			}
 			if(isButtonPressed3() == 1)
 			{
-				if(temp_red >= 1 && temp_red <= 99)
+				if(temp_red == temp_green + temp_yellow)
 				{
 					led7_seg[0] = temp_red;
-					led7_seg[1] = temp_red - 3;
-					led7_seg[2] = temp_red - 2;
+					led7_seg[1] = temp_yellow;
+					led7_seg[2] = temp_green;
 				}
 			}
 			if(timer4_flag == 1)
@@ -58,6 +63,7 @@ void fsm_manual_run()
 			if(timer2_flag == 1)
 			{
 				status = INIT;
+				temp_red = led7_seg[0];
 			}
 			if(isButtonPressed1() == 1)
 			{
@@ -65,6 +71,7 @@ void fsm_manual_run()
 				setTimer2(10000);
 				setTimer3(500);
 				setTimer4(250);
+				display_led = temp_yellow;
 			}
 			break;
 		case MODE_LED_YELLOW:
@@ -77,14 +84,15 @@ void fsm_manual_run()
 			if(isButtonPressed2() == 1)
 			{
 				temp_yellow++;
+				display_led = temp_yellow;
 			}
 			if(isButtonPressed3() == 1)
 			{
-				if(temp_yellow >= 1 && temp_yellow <= 99)
+				if(temp_red == temp_yellow + temp_green)
 				{
 					led7_seg[1] = temp_yellow;
-					led7_seg[0] = temp_yellow + 3;
-					led7_seg[2] = temp_yellow + 1;
+					led7_seg[0] = temp_red;
+					led7_seg[2] = temp_green;
 				}
 			}
 			if(timer4_flag == 1)
@@ -96,6 +104,7 @@ void fsm_manual_run()
 			if(timer2_flag == 1)
 			{
 				status = INIT;
+				temp_yellow = led7_seg[1];
 			}
 			if(isButtonPressed1() == 1)
 			{
@@ -103,6 +112,7 @@ void fsm_manual_run()
 				setTimer2(10000);
 				setTimer3(500);
 				setTimer4(250);
+				display_led = temp_green;
 			}
 			break;
 		case MODE_LED_GREEN:
@@ -115,14 +125,15 @@ void fsm_manual_run()
 			if(isButtonPressed2() == 1)
 			{
 				temp_green++;
+				display_led = temp_green;
 			}
 			if(isButtonPressed3() == 1)
 			{
-				if(temp_green >= 1 && temp_green <= 99)
+				if(temp_red == temp_yellow + temp_green)
 				{
 					led7_seg[2] = temp_green;
-					led7_seg[0] = temp_green + 2;
-					led7_seg[1] = temp_green - 1;
+					led7_seg[0] = temp_red;
+					led7_seg[1] = temp_yellow;
 				}
 			}
 			if(timer4_flag == 1)
@@ -134,10 +145,11 @@ void fsm_manual_run()
 			if(timer2_flag == 1)
 			{
 				status = INIT;
+				temp_green = led7_seg[2];
 			}
 			if(isButtonPressed1() == 1)
 			{
-				status = NORMAL_MODE;
+				status = INIT;
 				setTimer2(10000);
 //				setTimer3(500);
 //				setTimer4(250);
@@ -150,65 +162,88 @@ void fsm_manual_run()
 
 void display7SEG_MAN()
 {
-	if(status == MODE_LED_RED)
-	    {
-			switch(led_blinky1)
-			{
-				case 0:
-					HAL_GPIO_WritePin(GPIOA, EN0_Pin | EN2_Pin, RESET);
-					HAL_GPIO_WritePin(GPIOA, EN1_Pin | EN3_Pin, SET);
-					display7SEG1(led7_seg[0] / 10);
-					display7SEG2(0);
-					led_blinky1 = 1;
-					break;
-				case 1:
-					HAL_GPIO_WritePin(GPIOA, EN0_Pin | EN2_Pin, SET);
-					HAL_GPIO_WritePin(GPIOA, EN1_Pin | EN3_Pin, RESET);
-					display7SEG1(led7_seg[0] % 10);
-					display7SEG2(2);
-					led_blinky1 = 0;
-					break;
-			}
-	    }
-		if(status == MODE_LED_YELLOW)
+//	if(status == MODE_LED_RED)
+//	    {
+//			switch(led_blinky1)
+//			{
+//				case 0:
+//					HAL_GPIO_WritePin(GPIOA, EN0_Pin | EN2_Pin, RESET);
+//					HAL_GPIO_WritePin(GPIOA, EN1_Pin | EN3_Pin, SET);
+//					display7SEG1(led7_seg[0] / 10);
+//					display7SEG2(0);
+//					led_blinky1 = 1;
+//					break;
+//				case 1:
+//					HAL_GPIO_WritePin(GPIOA, EN0_Pin | EN2_Pin, SET);
+//					HAL_GPIO_WritePin(GPIOA, EN1_Pin | EN3_Pin, RESET);
+//					display7SEG1(led7_seg[0] % 10);
+//					display7SEG2(2);
+//					led_blinky1 = 0;
+//					break;
+//			}
+//	    }
+//		if(status == MODE_LED_YELLOW)
+//		{
+//			switch(led_blinky1)
+//			{
+//				case 0:
+//					HAL_GPIO_WritePin(GPIOA, EN0_Pin | EN2_Pin, RESET);
+//					HAL_GPIO_WritePin(GPIOA, EN1_Pin | EN3_Pin, SET);
+//					display7SEG1(led7_seg[1] / 10);
+//					display7SEG2(0);
+//					led_blinky1 = 1;
+//					break;
+//				case 1:
+//					HAL_GPIO_WritePin(GPIOA, EN0_Pin | EN2_Pin, SET);
+//					HAL_GPIO_WritePin(GPIOA, EN1_Pin | EN3_Pin, RESET);
+//					display7SEG1(led7_seg[1] % 10);
+//					display7SEG2(3);
+//					led_blinky1 = 0;
+//					break;
+//			}
+//		}
+//		if(status == MODE_LED_GREEN)
+//		{
+//			switch(led_blinky1)
+//			{
+//				case 0:
+//					HAL_GPIO_WritePin(GPIOA, EN0_Pin | EN2_Pin, RESET);
+//					HAL_GPIO_WritePin(GPIOA, EN1_Pin | EN3_Pin, SET);
+//					display7SEG1(led7_seg[2] / 10);
+//					display7SEG2(0);
+//					led_blinky1 = 1;
+//					break;
+//				case 1:
+//					HAL_GPIO_WritePin(GPIOA, EN0_Pin | EN2_Pin, SET);
+//					HAL_GPIO_WritePin(GPIOA, EN1_Pin | EN3_Pin, RESET);
+//					display7SEG1(led7_seg[2] % 10);
+//					display7SEG2(4);
+//					led_blinky1 = 0;
+//					break;
+//			}
+//		}
+
+
+	if(status == MODE_LED_RED || status == MODE_LED_YELLOW || status == MODE_LED_GREEN)
+	{
+		switch(led_blinky1)
 		{
-			switch(led_blinky1)
-			{
-				case 0:
-					HAL_GPIO_WritePin(GPIOA, EN0_Pin | EN2_Pin, RESET);
-					HAL_GPIO_WritePin(GPIOA, EN1_Pin | EN3_Pin, SET);
-					display7SEG1(led7_seg[1] / 10);
-					display7SEG2(0);
-					led_blinky1 = 1;
-					break;
-				case 1:
-					HAL_GPIO_WritePin(GPIOA, EN0_Pin | EN2_Pin, SET);
-					HAL_GPIO_WritePin(GPIOA, EN1_Pin | EN3_Pin, RESET);
-					display7SEG1(led7_seg[1] % 10);
-					display7SEG2(3);
-					led_blinky1 = 0;
-					break;
-			}
+			case 0:
+				HAL_GPIO_WritePin(GPIOA, EN0_Pin | EN2_Pin, RESET);
+				HAL_GPIO_WritePin(GPIOA, EN1_Pin | EN3_Pin, SET);
+				display7SEG1(display_led / 10);
+				display7SEG2(0);
+				led_blinky1 = 1;
+				break;
+			case 1:
+				tmp = (status == MODE_LED_RED) ? 2 : (status == MODE_LED_YELLOW) ? 3 : (status == MODE_LED_GREEN) ? 4 : 1;
+				HAL_GPIO_WritePin(GPIOA, EN0_Pin | EN2_Pin, SET);
+				HAL_GPIO_WritePin(GPIOA, EN1_Pin | EN3_Pin, RESET);
+				display7SEG1(display_led % 10);
+				display7SEG2(tmp);
+				led_blinky1 = 0;
+				break;
 		}
-		if(status == MODE_LED_GREEN)
-		{
-			switch(led_blinky1)
-			{
-				case 0:
-					HAL_GPIO_WritePin(GPIOA, EN0_Pin | EN2_Pin, RESET);
-					HAL_GPIO_WritePin(GPIOA, EN1_Pin | EN3_Pin, SET);
-					display7SEG1(led7_seg[2] / 10);
-					display7SEG2(0);
-					led_blinky1 = 1;
-					break;
-				case 1:
-					HAL_GPIO_WritePin(GPIOA, EN0_Pin | EN2_Pin, SET);
-					HAL_GPIO_WritePin(GPIOA, EN1_Pin | EN3_Pin, RESET);
-					display7SEG1(led7_seg[2] % 10);
-					display7SEG2(4);
-					led_blinky1 = 0;
-					break;
-			}
-		}
+	}
 }
 

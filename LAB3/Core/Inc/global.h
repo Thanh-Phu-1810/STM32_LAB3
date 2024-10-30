@@ -19,6 +19,20 @@ extern int led7_seg[3];
 extern int led_blinky;
 extern int led_blinky1;
 
+extern int temp_red;
+extern int temp_yellow;
+extern int temp_green;
+
+extern int display_led;
+
+extern int tmp;
+extern int temp_led1;
+extern int temp_led2;
+
+extern int x;
+extern int y;
+extern int z;
+
 #define INIT       1
 #define AUTO_RED_GREEN      2
 #define AUTO_RED_YELLOW     3
